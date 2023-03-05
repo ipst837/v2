@@ -1,0 +1,970 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="{% static 'jquery-3.6.0.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'ganz.css' %}">
+    <title>Ganz Schön Clever</title>
+</head>
+<body>
+{% include "navbar.html" %}
+{% block content %}
+{% endblock %}
+<div style="font-family: cursive; font-size: 40px; float: left; width: 700px; height: 1000px; background: url({% static 'sheet.png' %});">
+    <div class="dice_area">
+        <div class="used_dice" style="background: white;">1</div>
+        <div class="used_dice" style="background: yellow;">1</div>
+        <div class="used_dice" style="background: skyblue;">1</div>
+        <div class="used_dice" style="background: yellowgreen;">1</div>
+        <div class="used_dice" style="background: orange;">1</div>
+        <div class="used_dice" style="background: purple; color: ivory;">1</div>
+    </div>
+    <div class="round_area">
+        <div class="round_box" style="width: 90px;">O</div>
+        <div class="round_box"></div>
+        <div class="round_box"></div>
+        <div class="round_box"></div>
+        <div class="round_box"></div>
+        <div class="round_box"></div>
+    </div>
+    <div class="re_roll_area">
+        <div class="re_roll_box" style="margin-left: 85px;">O</div>
+        <div class="re_roll_box"></div>
+        <div class="re_roll_box"></div>
+        <div class="re_roll_box"></div>
+        <div class="re_roll_box"></div>
+        <div class="re_roll_box"></div>
+        <div class="re_roll_box"></div>
+    </div>
+    <div class="extra_die_area">
+        <div class="extra_die_box" style="margin-left: 85px;"></div>
+        <div class="extra_die_box"></div>
+        <div class="extra_die_box"></div>
+        <div class="extra_die_box"></div>
+        <div class="extra_die_box"></div>
+        <div class="extra_die_box"></div>
+        <div class="extra_die_box"></div>
+    </div>
+    <div class="yellow_area" id="yellow_area">
+        <div style="height: 75px;">
+            <div class="yellow_box" style="margin-top: 20px; margin-left: 35px;" onclick="yellow_dice_submit(0)"></div>
+            <div class="yellow_box" style="margin-top: 20px; margin-left: 6px;" onclick="yellow_dice_submit(1)"></div>
+            <div class="yellow_box" style="margin-top: 20px; margin-left: 6px;" onclick="yellow_dice_submit(2)"></div>
+        </div>
+        <div style="height: 57px;">
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 35px;" onclick="yellow_dice_submit(3)"></div>
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 6px;" onclick="yellow_dice_submit(4)"></div>
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 66px;" onclick="yellow_dice_submit(5)"></div>
+        </div>
+        <div style="height: 57px;">
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 35px;" onclick="yellow_dice_submit(6)"></div>
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 66px;" onclick="yellow_dice_submit(7)"></div>
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 6px;" onclick="yellow_dice_submit(8)"></div>
+        </div>
+        <div>
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 95px;" onclick="yellow_dice_submit(9)"></div>
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 6px;" onclick="yellow_dice_submit(10)"></div>
+            <div class="yellow_box" style="margin-top: 2px; margin-left: 6px;" onclick="yellow_dice_submit(11)"></div>
+        </div>
+    </div>
+    <div class="blue_area" id="blue_area">
+        <div style="height: 140px;">
+            <div class="blue_box" style="margin-top: 85px; margin-left: 84px;" onclick="extra_blue(0)"></div>
+            <div class="blue_box" style="margin-top: 85px; margin-left: 8px;" onclick="extra_blue(1)"></div>
+            <div class="blue_box" style="margin-top: 85px; margin-left: 8px;" onclick="extra_blue(2)"></div>
+        </div>
+        <div style="height: 57px;">
+            <div class="blue_box" style="margin-top: 2px; margin-left: 23px;" onclick="extra_blue(3)"></div>
+            <div class="blue_box" style="margin-top: 2px; margin-left: 8px;" onclick="extra_blue(4)"></div>
+            <div class="blue_box" style="margin-top: 2px; margin-left: 8px;" onclick="extra_blue(5)"></div>
+            <div class="blue_box" style="margin-top: 2px; margin-left: 8px;" onclick="extra_blue(6)"></div>
+        </div>
+        <div>
+            <div class="blue_box" style="margin-top: 2px; margin-left: 23px;" onclick="extra_blue(7)"></div>
+            <div class="blue_box" style="margin-top: 2px; margin-left: 8px;" onclick="extra_blue(8)"></div>
+            <div class="blue_box" style="margin-top: 2px; margin-left: 8px;" onclick="extra_blue(9)"></div>
+            <div class="blue_box" style="margin-top: 2px; margin-left: 8px;" onclick="extra_blue(10)"></div>
+        </div>
+    </div>
+    <div class="green_area" id="green_area" onclick="r4_bonus(0)">
+        <div class="green_box" style="margin-left: 86px;"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+        <div class="green_box"></div>
+    </div>
+    <div class="orange_area" id="orange_area" onclick="r4_bonus(1)">
+        <div class="orange_box" style="margin-left: 86px;"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+        <div class="orange_box"></div>
+    </div>
+    <div class="purple_area" id="purple_area" onclick="r4_bonus(2)">
+        <div class="purple_box" style="margin-left: 86px;"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+        <div class="purple_box"></div>
+    </div>
+</div>
+<div style="float: left;">
+    <div class="message" style="font-size: 40px; display: block;">Choose a dice (Active player's turn)</div>
+    <div class="message" style="font-size: 40px;">Choose a dice (Passive player's turn)</div>
+    <div class="message" style="font-size: 40px;">You can use extra die actions</div>
+    <div class="message" style="font-size: 40px;">The game is over!</div>
+    <div class="message" style="font-size: 30px; display: block;">　</div>
+    <div class="message" style="font-size: 30px;">Choose a yellow box (yellow dice)</div>
+    <div class="message" style="font-size: 30px;">Choose a yellow box (white dice)</div>
+    <div class="message" style="font-size: 30px;">Choose any yellow box you want</div>
+    <div class="message" style="font-size: 30px;">Choose any blue box you want</div>
+    <div class="message" style="font-size: 30px;">Choose any box you want</div>
+    <p style="font-size: 20px; margin: 10px; border: 2px black solid; border-radius: 10px; padding: 5px; width: 300px; text-align: center; background: pink;">
+        Use white dice as
+        <select id="white_option">
+            <option>yellow</option>
+            <option>blue</option>
+            <option>green</option>
+            <option>orange</option>
+            <option>purple</option>
+        </select>
+    </p>
+    <div style="width: 400px; height: 250px;">
+        <div class="valid_dice" id="white_dice" style="background: white;">1</div>
+        <div class="valid_dice" id="yellow_dice" style="background: yellow;">1</div>
+        <div class="valid_dice" id="blue_dice" style="background: skyblue;">1</div>
+        <div class="valid_dice" id="green_dice" style="background: yellowgreen;">1</div>
+        <div class="valid_dice" id="orange_dice" style="background: orange;">1</div>
+        <div class="valid_dice" id="purple_dice" style="background: purple; color: ivory;">1</div>
+    </div>
+    <div style="height: 110px; width: 420px; margin: 10px; background: lightgray; border: 2px black solid; border-radius: 10px;">
+        <button id="re_roll" onclick="re_roll_use()" style="margin: 10px;">Re-roll dices</button>
+        <button id="pass" onclick="pass()" style="margin: 10px;">Pass this turn</button>
+        <button id="give_up_bonus" onclick="give_up_bonus()" style="margin: 10px;">Give up bonus</button><br>
+        <button style="margin: 10px;"><a href="{% static 'Thats_pretty_clever_rulebook.pdf' %}" download="Thats_pretty_clever_rulebook.pdf">Download rulebook</a></button>
+    </div>
+    <div class="silver_tray" style="width: 700px; height: 450px; background: url({% static 'silver_tray.png' %});">
+        <div class="tray_dice" style="background: white;">1</div>
+        <div class="tray_dice" style="background: yellow;">1</div>
+        <div class="tray_dice" style="background: skyblue;">1</div>
+        <div class="tray_dice" style="background: yellowgreen;">1</div>
+        <div class="tray_dice" style="background: orange;">1</div>
+        <div class="tray_dice" style="background: purple; color: ivory;">1</div>
+    </div>
+</div>
+<div style="float: left; margin: 10px; height: 420px; width: 150px;">
+    <div class="score_color" style="background: yellow;"></div>
+    <div class="score_box" style="background: lightgray;"></div>
+    <div class="score_color" style="background: skyblue;"></div>
+    <div class="score_box" style="background: ivory;"></div>
+    <div class="score_color" style="background: yellowgreen;"></div>
+    <div class="score_box" style="background: lightgray;"></div>
+    <div class="score_color" style="background: orange;"></div>
+    <div class="score_box" style="background: ivory;"></div>
+    <div class="score_color" style="background: purple;"></div>
+    <div class="score_box" style="background: lightgray;"></div>
+    <div class="score_color" style="background: url({% static 'fox.png' %});"></div>
+    <div class="score_box" style="background: ivory;"></div>
+    <div class="score_color" style="background: ivory;">∑</div>
+    <div class="score_box" style="background: lightgray;"></div>
+</div>
+<script>
+    var phase = [0, 0, 0, 0, 0];
+    var phase_counter = 0;
+    var stage = 0;
+    var round = 0;
+    var tmp = 0;
+    var valid_dices = document.getElementsByClassName("valid_dice");
+    var used_dices = document.getElementsByClassName("used_dice");
+    var tray_dices = document.getElementsByClassName("tray_dice");
+    var valid = [0, 1, 2, 3, 4, 5];
+    var stage3_dices = new Array();
+
+    var messages = document.getElementsByClassName("message");
+    var round_box = document.getElementsByClassName("round_box");
+    var re_roll = document.getElementsByClassName("re_roll_box");
+    var re_roll_acquired = 1;
+    var re_roll_used = 0;
+    var extra_die = document.getElementsByClassName("extra_die_box");
+    var extra_die_acquired = 0;
+    var extra_die_used = 0;
+    var fox = 0;
+    var score_board = document.getElementsByClassName("score_box");
+
+    var yellow_bonus = [1, 1, 1, 1, 1];
+    var blue_bonus = [1, 1, 1, 1, 1, 1, 1];
+    var yellow_restriction = [3, 6, 5, 2, 1, 5, 1, 2, 4, 3, 4, 6];
+    var green_restriction = [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5];
+    var purple_restriction = 0;
+    var score = [0, 0, 0, 0, 0];
+
+    var y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var b = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var g = new Array();
+    var o = new Array();
+    var p = new Array();
+    var b_count = 0;
+    var g_count = 0;
+    var o_count = 0;
+    var p_count = 0;
+
+    var white_option = document.getElementById('white_option');
+
+    var yellow_area = document.getElementsByClassName('yellow_box');
+    var blue_area = document.getElementsByClassName('blue_box');
+    var green_area = document.getElementsByClassName('green_box');
+    var orange_area = document.getElementsByClassName('orange_box');
+    var purple_area = document.getElementsByClassName('purple_box');
+
+    var roll_dice = function(x) {
+        tmp = Math.floor(Math.random() * 6) + 1;
+        valid_dices[x].innerText = String(tmp);
+        return tmp;
+    };
+
+    for (var i = 0;i < 6;i++) {
+        roll_dice(i);
+        used_dices[i].style.display = "none";
+        tray_dices[i].style.display = "none";
+    }
+
+    var re_roll_acquire = function() {
+        re_roll[re_roll_acquired].innerText = "O";
+        re_roll_acquired += 1;
+    };
+
+    var re_roll_use = function() {
+        if (re_roll_used < re_roll_acquired && stage < 3) {
+            var l = valid.length;
+            for (var i = 0;i < l;i++) {
+                roll_dice(valid[i]);
+            }
+            re_roll[re_roll_used].innerText = "X";
+            re_roll_used += 1;
+        }
+    };
+
+    var extra_die_acquire = function() {
+        extra_die[extra_die_acquired].innerText = "O";
+        extra_die_acquired += 1;
+    };
+
+    var update = function(n) {
+        if (stage < 2) {
+            if (n < 6) {
+                stage += 1;
+                var l = valid.length;
+                if (n == -1) {
+                    for (var i = 0;i < l;i++) {
+                        roll_dice(valid[i]);
+                    }
+                }
+                else {
+                    var i = 0;
+                    while (i < l) {
+                        if (valid[i] == n) {
+                            used_dices[n].innerText = valid_dices[n].innerText;
+                            valid_dices[n].style.display = "none";
+                            used_dices[n].style.display = "block";
+                            valid.splice(i, 1);
+                            l -= 1;
+                        }
+                        else if (valid_dices[valid[i]].innerText < valid_dices[n].innerText) {
+                            tray_dices[valid[i]].innerText = valid_dices[valid[i]].innerText;
+                            valid_dices[valid[i]].style.display = "none";
+                            tray_dices[valid[i]].style.display = "block";
+                            valid.splice(i, 1);
+                            l -= 1;
+                        }
+                        else {
+                            roll_dice(valid[i]);
+                            i++;
+                        }
+                    }
+                }
+            }
+        }
+        else if (stage == 2) {
+            if (n < 6) {
+                stage += 1;
+                valid = [0, 1, 2, 3, 4, 5];
+                for (var i = 0;i < 6;i++) {
+                    valid_dices[i].style.display = "block";
+                    used_dices[i].style.display = "none";
+                    tray_dices[i].style.display = "none";
+                }
+            }
+        }
+        else if (stage == 3) {
+            if (n == -1) {
+                stage += 1;
+                valid = [0, 1, 2, 3, 4, 5];
+                stage3_dices = [];
+                for (var i = 0;i < 6;i++) {
+                    valid_dices[i].style.display = "block";
+                    var roll_result = [roll_dice(i), Math.random(), i];
+                    stage3_dices.push(roll_result);
+                }
+                stage3_dices.sort(function(d1, d2) {
+                    if (d1[0] < d2[0]) {
+                        return -1;
+                    }
+                    else if (d1[0] > d2[0]) {
+                        return 1;
+                    }
+                    else {
+                        if (d1[1] < d2[1]) {
+                            return -1;
+                        }
+                        else {
+                            return 1;
+                        }
+                    }
+                });
+                tmp = 0;
+                for (var i = 0;i < 3;i++) {
+                    tmp += validation_check(stage3_dices[i][2], stage3_dices[i][0]);
+                }
+                if (tmp > 0) {
+                    for (var i = 3;i < 6;i++) {
+                        valid_dices[stage3_dices[i][2]].style.display = "none";
+                        tray_dices[stage3_dices[i][2]].innerText = String(stage3_dices[i][0]);
+                        tray_dices[stage3_dices[i][2]].style.display = "block";
+                    }
+                }
+            }
+            else if (n < 6) {
+                valid_dices[n].style.display = "none";
+            }
+        }
+        else if (stage == 4) {
+            if (n < 6) {
+                stage += 1;
+                for (var i = 0;i < 6;i++) {
+                    valid_dices[i].style.display = "block";
+                    tray_dices[i].style.display = "none";
+                }
+            }
+        }
+        else {
+            if (n == -1) {
+                round += 1;
+                if (round == 1) {
+                    extra_die_acquire();
+                }
+                else if (round == 2) {
+                    re_roll_acquire();
+                }
+                else if (round == 3) {
+                    phase[4] += 1;
+                    phase_counter += 1;
+                }
+                else if (round == 6) {
+                    calculate_score();
+                    phase = [0, 0, 0, 0, 0];
+                    phase_counter = 100;
+                    message_check();
+                }
+                valid = [0, 1, 2, 3, 4, 5];
+                for (var i = 0;i < 6;i++) {
+                    valid_dices[i].style.display = "block";
+                    roll_dice(i);
+                }
+                round_box[round].innerText = "O";
+                stage = 0;
+            }
+            else if (n < 6) {
+                valid_dices[n].style.display = "none";
+            }
+        }
+        message_check();
+    };
+
+    var message_check = function() {
+        for (var i = 0;i < 10;i++) {
+            messages[i].style.display = "none";
+        }
+        if (phase_counter == 100) {
+            messages[3].style.display = "block";
+            messages[4].style.display = "block";
+        }
+        else if (stage < 3) {
+            messages[0].style.display = "block";
+        }
+        else if (stage == 4) {
+            messages[1].style.display = "block";
+        }
+        else {
+            messages[2].style.display = "block";
+        }
+        if (phase[0] > 0) {
+            messages[5].style.display = "block";
+        }
+        if (phase[1] > 0) {
+            messages[6].style.display = "block";
+        }
+        if (phase[2] > 0) {
+            messages[7].style.display = "block";
+        }
+        if (phase[3] > 0) {
+            messages[8].style.display = "block";
+        }
+        if (phase[4] > 0) {
+            messages[9].style.display = "block";
+        }
+        if (phase_counter == 0) {
+            messages[4].style.display = "block";
+        }
+    };
+
+    var validation_check = function(d, n) {
+        if (d == 0) {
+            return validation_check(1, n) + validation_check(2, n) + validation_check(3, n) + validation_check(4, n) + validation_check(5, n);
+        }
+        else if (d == 1) {
+            if (n == 1) {
+                return 2 - y[4] - y[6];
+            }
+            else if (n == 2) {
+                return 2 - y[3] - y[7];
+            }
+            else if (n == 3) {
+                return 2 - y[0] - y[9];
+            }
+            else if (n == 4) {
+                return 2 - y[8] - y[10];
+            }
+            else if (n == 5) {
+                return 2 - y[2] - y[5];
+            }
+            else {
+                return 2 - y[1] - y[11];
+            }
+        }
+        else if (d == 2) {
+            return 1 - b[parseInt(valid_dices[0].innerText) + parseInt(valid_dices[2].innerText) - 2];
+        }
+        else if (d == 3) {
+            if (g_count < 11) {
+                if (n > green_restriction[g_count]) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            else {
+                return 0;
+            }
+        }
+        else if (d == 4) {
+            if (o_count < 11) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        else {
+            if (n > purple_restriction && p_count < 11) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+    };
+
+    var give_up_bonus = function() {
+        phase = [0, 0, 0, 0, 0];
+        phase_counter = 0;
+        message_check();
+    };
+
+    var pass = function() {
+        phase = [0, 0, 0, 0, 0];
+        phase_counter = 0;
+        update(-1);
+    };
+
+    var yellow_dice_submit = function(n) {
+        if (phase[0] > 0) {
+            if (stage == 3 || stage == 5) {
+                phase[0] -= 1;
+                phase_counter -= 1;
+                valid_dices[1].style.border = "4px solid black";
+                if ((extra_die_used < extra_die_acquired) && (yellow_restriction[n] == parseInt(valid_dices[1].innerText)) && (y[n] == 0)) {
+                    extra_die[extra_die_used].innerText = "X";
+                    extra_die_used += 1;
+                    y[n] = 1;
+                    yellow_area[n].innerText = "X";
+                    yellow_bonus_check();
+                    update(1);
+                }
+            }
+            else {
+                phase[0] -= 1;
+                phase_counter -= 1;
+                valid_dices[1].style.border = "4px solid black";
+                if (yellow_restriction[n] == parseInt(valid_dices[1].innerText) && y[n] == 0) {
+                    y[n] = 1;
+                    yellow_area[n].innerText = "X";
+                    yellow_bonus_check();
+                    update(1);
+                }
+            }
+        }
+        else if (phase[1] > 0) {
+            if (stage == 3 || stage == 5) {
+                phase[1] -= 1;
+                phase_counter -= 1;
+                valid_dices[0].style.border = "4px solid black";
+                if ((extra_die_used < extra_die_acquired) && (yellow_restriction[n] == parseInt(valid_dices[0].innerText)) && (y[n] == 0)) {
+                    extra_die[extra_die_used].innerText = "X";
+                    extra_die_used += 1;
+                    y[n] = 1;
+                    yellow_area[n].innerText = "X";
+                    yellow_bonus_check();
+                    update(0);
+                }
+            }
+            else {
+                phase[1] -= 1;
+                phase_counter -= 1;
+                valid_dices[0].style.border = "4px solid black";
+                if (yellow_restriction[n] == parseInt(valid_dices[0].innerText) && y[n] == 0) {
+                    y[n] = 1;
+                    yellow_area[n].innerText = "X";
+                    yellow_bonus_check();
+                    update(0);
+                }
+            }
+        }
+        else if (phase[2] > 0) {
+            if (y[n] == 0) {
+                y[n] = 1;
+                yellow_area[n].innerText = "X";
+                phase[2] -= 1;
+                phase_counter -= 1;
+                yellow_bonus_check();
+            }
+        }
+        else if (phase[4] > 0) {
+            if (y[n] == 0) {
+                y[n] = 1;
+                yellow_area[n].innerText = "X";
+                phase[4] -= 1;
+                phase_counter -= 1;
+                yellow_bonus_check();
+            }
+        }
+        message_check();
+    };
+
+    var yellow_bonus_check = function() {
+        if (yellow_bonus[0] == 1) {
+            if (y[0] == 1 && y[1] == 1 && y[2] == 1) {
+                phase[3] += 1;
+                phase_counter += 1;
+                yellow_bonus[0] = 0;
+            }
+        }
+        if (yellow_bonus[1] == 1) {
+            if (y[3] == 1 && y[4] == 1 && y[5] == 1) {
+                orange_dice_submit(4);
+                yellow_bonus[1] = 0;
+            }
+        }
+        if (yellow_bonus[2] == 1) {
+            if (y[6] == 1 && y[7] == 1 && y[8] == 1) {
+                green_dice_submit(6);
+                yellow_bonus[2] = 0;
+            }
+        }
+        if (yellow_bonus[3] == 1) {
+            if (y[9] == 1 && y[10] == 1 && y[11] == 1) {
+                fox += 1;
+                yellow_bonus[3] = 0;
+            }
+        }
+        if (yellow_bonus[4] == 1) {
+            if (y[0] == 1 && y[4] == 1 && y[7] == 1 && y[11] == 1) {
+                extra_die_acquire();
+                yellow_bonus[4] = 0;
+            }
+        }
+    };
+
+    var extra_blue = function(n) {
+        if (phase[3] > 0 && b[n] == 0) {
+            phase[3] -= 1;
+            phase_counter -= 1;
+            blue_dice_submit(n + 2);
+            message_check();
+        }
+        else if (phase[4] > 0 && b[n] == 0) {
+            phase[4] -= 1;
+            phase_counter -= 1;
+            blue_dice_submit(n + 2);
+            message_check();
+        }
+    };
+
+    var blue_dice_submit = function(n) {
+        if (b[n - 2] == 0) {
+            b[n - 2] = 1;
+            b_count += 1;
+            blue_area[n - 2].innerText = 'X';
+            if (blue_bonus[0] == 1) {
+                if (b[3] == 1 && b[7] == 1) {
+                    re_roll_acquire();
+                    blue_bonus[0] = 0;
+                }
+            }
+            if (blue_bonus[1] == 1) {
+                if (b[0] == 1 && b[4] == 1 && b[8] == 1) {
+                    green_dice_submit(6);
+                    blue_bonus[1] = 0;
+                }
+            }
+            if (blue_bonus[2] == 1) {
+                if (b[1] == 1 && b[5] == 1 && b[9] == 1) {
+                    purple_dice_submit(6);
+                    blue_bonus[2] = 0;
+                }
+            }
+            if (blue_bonus[3] == 1) {
+                if (b[2] == 1 && b[6] == 1 && b[10] == 1) {
+                    extra_die_acquire();
+                    blue_bonus[3] = 0;
+                }
+            }
+            if (blue_bonus[4] == 1) {
+                if (b[0] == 1 && b[1] == 1 && b[2] == 1) {
+                    orange_dice_submit(5);
+                    blue_bonus[4] = 0;
+                }
+            }
+            if (blue_bonus[5] == 1) {
+                if (b[3] == 1 && b[4] == 1 && b[5] == 1 && b[6] == 1) {
+                    phase[2] += 1;
+                    phase_counter += 1;
+                    blue_bonus[5] = 0;
+                }
+            }
+            if (blue_bonus[6] == 1) {
+                if (b[7] == 1 && b[8] == 1 && b[9] == 1 && b[10] == 1) {
+                    fox += 1;
+                    blue_bonus[6] = 0;
+                }
+            }
+            return 2;
+        }
+        else {
+            return 6;
+        }
+    };
+
+    var green_dice_submit = function(n) {
+        if (g_count < 11) {
+            if (n > green_restriction[g_count]) {
+                g_count = g.push("X");
+                if (g_count == 4) {
+                    extra_die_acquire();
+                }
+                else if (g_count == 6) {
+                    phase[3] += 1;
+                    phase_counter += 1;
+                }
+                else if (g_count == 7) {
+                    fox += 1;
+                }
+                else if (g_count == 9) {
+                    purple_dice_submit(6);
+                }
+                else if (g_count == 10) {
+                    re_roll_acquire();
+                }
+                green_area[g_count - 1].innerText = 'X';
+                return 3;
+            }
+            else {
+                return 6;
+            }
+        }
+        else {
+            return 6;
+        }
+    };
+
+    var orange_dice_submit = function(n) {
+        if (o_count < 11) {
+            o_count = o.push(n);
+            score[3] += n;
+            if (o_count == 4 || o_count == 7 || o_count == 9) {
+                o[o_count - 1] *= 2;
+                score[3] += n;
+            }
+            else if (o_count == 11) {
+                o[o_count - 1] *= 3;
+                score[3] += 2 * n
+            }
+            else if (o_count == 3) {
+                re_roll_acquire();
+            }
+            else if (o_count == 5) {
+                phase[2] += 1;
+                phase_counter += 1;
+            }
+            else if (o_count == 6) {
+                extra_die_acquire();
+            }
+            else if (o_count == 8) {
+                fox += 1;
+            }
+            else if (o_count == 10) {
+                purple_dice_submit(6);
+            }
+            orange_area[o_count - 1].innerText = String(o[o_count - 1]);
+            return 4;
+        }
+        else {
+            return 6;
+        }
+    };
+
+    var purple_dice_submit = function(n) {
+        if (n > purple_restriction && p_count < 11) {
+            p_count = p.push(n);
+            score[4] += n;
+            if (n == 6) {
+                purple_restriction = 0;
+            }
+            else {
+                purple_restriction = n;
+            }
+            if (p_count == 3 || p_count == 8) {
+                re_roll_acquire();
+            }
+            else if (p_count == 5 || p_count == 11) {
+                extra_die_acquire();
+            }
+            else if (p_count == 4) {
+                phase[3] += 1;
+                phase_counter += 1;
+            }
+            else if (p_count == 6) {
+                phase[2] += 1;
+                phase_counter += 1;
+            }
+            else if (p_count == 7) {
+                fox += 1;
+            }
+            else if (p_count == 9) {
+                green_dice_submit(6);
+            }
+            else if (p_count == 10) {
+                orange_dice_submit(6);
+            }
+            purple_area[p_count - 1].innerText = String(p[p_count - 1]);
+            return 5;
+        }
+        else {
+            return 6;
+        }
+    };
+
+    var r4_bonus = function(n) {
+        if (phase[4] > 0) {
+            if (n == 0) {
+                phase[4] -= 1;
+                phase_counter -= 1;
+                green_dice_submit(6);
+            }
+            else if (n == 1) {
+                phase[4] -= 1;
+                phase_counter -= 1;
+                orange_dice_submit(6);
+            }
+            else {
+                phase[4] -= 1;
+                phase_counter -= 1;
+                purple_dice_submit(6);
+            }
+            message_check();
+        }
+    };
+
+    var calculate_score = function() {
+        if (y[0] == 1 && y[3] == 1 && y[6] == 1) {
+            score[0] += 10;
+        }
+        if (y[1] == 1 && y[4] == 1 && y[9] == 1) {
+            score[0] += 14;
+        }
+        if (y[2] == 1 && y[7] == 1 && y[10] == 1) {
+            score[0] += 16;
+        }
+        if (y[5] == 1 && y[8] == 1 && y[11] == 1) {
+            score[0] += 20;
+        }
+        score[1] = b_count * (b_count - 1) / 2 + 1;
+        score[2] = g_count * (g_count + 1) / 2;
+        score.push(fox * Math.min(...score));
+        score.push(score[0] + score[1] + score[2] + score[3] + score[4] + score[5]);
+        for (var i = 0;i < 7;i++) {
+            score_board[i].innerText = String(score[i]);
+        }
+    };
+
+    $('#white_dice').click(function() {
+        if (phase_counter == 0) {
+            var wo = white_option.options[white_option.selectedIndex].text;
+            if (wo == 'yellow') {
+                valid_dices[0].style.border = "4px solid red";
+                phase[1] += 1;
+                phase_counter += 1;
+                message_check();
+            }
+            else {
+                if (stage == 3 || stage == 5) {
+                    if (extra_die_used < extra_die_acquired) {
+                        if (wo == 'blue') {
+                            tmp = blue_dice_submit(parseInt(valid_dices[0].innerText) + parseInt(valid_dices[2].innerText));
+                        }
+                        else if (wo == 'green') {
+                            tmp = green_dice_submit(parseInt(valid_dices[0].innerText));
+                        }
+                        else if (wo == 'orange') {
+                            tmp = orange_dice_submit(parseInt(valid_dices[0].innerText));
+                        }
+                        else {
+                            tmp = purple_dice_submit(parseInt(valid_dices[0].innerText));
+                        }
+                        if (tmp < 6) {
+                            extra_die[extra_die_used].innerText = "X";
+                            extra_die_used += 1;
+                            update(0);
+                        }
+                    }
+                }
+                else {
+                    if (wo == 'blue') {
+                        tmp = blue_dice_submit(parseInt(valid_dices[0].innerText) + parseInt(valid_dices[2].innerText));
+                    }
+                    else if (wo == 'green') {
+                        tmp = green_dice_submit(parseInt(valid_dices[0].innerText));
+                    }
+                    else if (wo == 'orange') {
+                        tmp = orange_dice_submit(parseInt(valid_dices[0].innerText));
+                    }
+                    else {
+                        tmp = purple_dice_submit(parseInt(valid_dices[0].innerText));
+                    }
+                    if (tmp < 6) {
+                        update(0);
+                    }
+                }
+            }
+        }
+    });
+
+    $('#yellow_dice').click(function() {
+        if (phase_counter == 0) {
+            valid_dices[1].style.border = "4px solid red";
+            phase[0] += 1;
+            phase_counter += 1;
+            message_check();
+        }
+    });
+
+    $('#blue_dice').click(function() {
+        if (phase_counter == 0) {
+            if (stage == 3 || stage == 5) {
+                if (extra_die_used < extra_die_acquired) {
+                    if (blue_dice_submit(parseInt(valid_dices[0].innerText) + parseInt(valid_dices[2].innerText)) < 6) {
+                        extra_die[extra_die_used].innerText = "X";
+                        extra_die_used += 1;
+                        update(2);
+                    }
+                }
+            }
+            else {
+                update(blue_dice_submit(parseInt(valid_dices[0].innerText) + parseInt(valid_dices[2].innerText)));
+            }
+        }
+    });
+
+    $('#green_dice').click(function() {
+        if (phase_counter == 0) {
+            if (stage == 3 || stage == 5) {
+                if (extra_die_used < extra_die_acquired) {
+                    if (green_dice_submit(parseInt(valid_dices[3].innerText)) < 6) {
+                        extra_die[extra_die_used].innerText = "X";
+                        extra_die_used += 1;
+                        update(3);
+                    }
+                }
+            }
+            else {
+                update(green_dice_submit(parseInt(valid_dices[3].innerText)));
+            }
+        }
+    });
+
+    $('#orange_dice').click(function() {
+        if (phase_counter == 0) {
+            if (stage == 3 || stage == 5) {
+                if (extra_die_used < extra_die_acquired) {
+                    if (orange_dice_submit(parseInt(valid_dices[4].innerText)) < 6) {
+                        extra_die[extra_die_used].innerText = "X";
+                        extra_die_used += 1;
+                        update(4);
+                    }
+                }
+            }
+            else {
+                update(orange_dice_submit(parseInt(valid_dices[4].innerText)));
+            }
+        }
+    });
+
+    $('#purple_dice').click(function() {
+        if (phase_counter == 0) {
+            if (stage == 3 || stage == 5) {
+                if (extra_die_used < extra_die_acquired) {
+                    if (purple_dice_submit(parseInt(valid_dices[5].innerText)) < 6) {
+                        extra_die[extra_die_used].innerText = "X";
+                        extra_die_used += 1;
+                        update(5);
+                    }
+                }
+            }
+            else {
+                update(purple_dice_submit(parseInt(valid_dices[5].innerText)));
+            }
+        }
+    });
+</script>
+</body>
+</html>

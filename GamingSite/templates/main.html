@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="width: 36rem">
+    <div class="card-body">
+        <h4 style="margin-bottom: 20px;">About the developer</h4>
+        <p><a href="/profile">See profile</a></p>
+    </div>
+</div>
+<div class="card" style="width: 36rem">
+    <div class="card-body">
+        <h5 class="card-title">Play Games</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Othello, Tic-Tac-Toe, Ganz Schön Clever</h6>
+        <p class="card-text">I hope you can enjoy these games!</p>
+        <a href="/games" class="card-link">Join!</a>
+    </div>
+</div>
+<div class="card" style="float: left; width: 18rem">
+    <div class="card-body"><a href="/polls">Give answers to the polls</a></div>
+</div>
+<div class="card" style="float: left; width: 18rem">
+    <div class="card-body"><a href="/admin">For administrator</a></div>
+</div>
+{% endblock %}

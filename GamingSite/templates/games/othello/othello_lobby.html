@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table table-bordered" style="border: 5px solid black; margin: 5px; width: 650px; text-align: center; float: left;">
+    <thead style="background: silver; border: 3px solid gray">
+        <tr>
+            <th colspan="2" style="font-size: 25px; text-align: center;">Opponent</th>
+            <th style="font-size: 25px; text-align: center;">Room No.</th>
+            <th colspan="2" style="font-size: 25px; text-align: center;">Color</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td rowspan="12" style="background: lightblue; font-size: 30px; vertical-align: middle; width: 200px;">vs AI</td>
+        <td rowspan="4" style="background: yellowgreen; font-size: 20px; vertical-align: middle; width: 150px;">Easy</td>
+        <td style="width: 150px;">Room 0</td>
+        <td style="width: 75px;"><a href="ai/0/white">White</a></td>
+        <td style="width: 75px;"></td>
+    </tr>
+    <tr>
+        <td>Room 1</td>
+        <td><a href="ai/1/white">White</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Room 2</td>
+        <td></td>
+        <td><a href="ai/2/black">Black</a></td>
+    </tr>
+    <tr>
+        <td>Room 3</td>
+        <td></td>
+        <td><a href="ai/3/black">Black</a></td>
+    </tr>
+    <tr>
+        <td rowspan="4" style="background: ivory; font-size: 20px; vertical-align: middle;">Medium</td>
+        <td>Room 4</td>
+        <td><a href="ai/4/white">White</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Room 5</td>
+        <td><a href="ai/5/white">White</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Room 6</td>
+        <td></td>
+        <td><a href="ai/6/black">Black</a></td>
+    </tr>
+    <tr>
+        <td>Room 7</td>
+        <td></td>
+        <td><a href="ai/7/black">Black</a></td>
+    </tr>
+    <tr>
+        <td rowspan="4" style="background: pink; font-size: 20px; vertical-align: middle;">Hard</td>
+        <td>Room 8</td>
+        <td><a href="ai/8/white">White</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Room 9</td>
+        <td><a href="ai/9/white">White</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Room 10</td>
+        <td></td>
+        <td><a href="ai/10/black">Black</a></td>
+    </tr>
+    <tr>
+        <td>Room 11</td>
+        <td></td>
+        <td><a href="ai/11/black">Black</a></td>
+    </tr>
+    <tr>
+        <td colspan="2" rowspan="4" style="background: crimson; font-size: 30px; vertical-align: middle;">Duel</td>
+        <td>Room 12</td>
+        <td><a href="12/white">White</a></td>
+        <td><a href="12/black">Black</a></td>
+    </tr>
+    <tr>
+        <td>Room 13</td>
+        <td><a href="13/white">White</a></td>
+        <td><a href="13/black">Black</a></td>
+    </tr>
+    <tr>
+        <td>Room 14</td>
+        <td><a href="14/white">White</a></td>
+        <td><a href="14/black">Black</a></td>
+    </tr>
+    <tr>
+        <td>Room 15</td>
+        <td><a href="15/white">White</a></td>
+        <td><a href="15/black">Black</a></td>
+    </tr>
+    </tbody>
+</table>
+<div style="float: left;">
+    <textarea id="chat-log" rows="20" cols="80" style="margin: 5px;"></textarea><br>
+    <input id="chat-id" type="text" size="6" style="margin-left: 5px; margin: right: 3px; border: 3px solid black; border-radius: 5px; text-align: center;" value="User ID">
+    <input id="chat-input" type="text" size="54" style="margin-top: 8px;">
+    <input id="chat-submit" type="button" class="button-41" style="width: 12%;" value="Send">
+</div>
+<button type="button" class="btn btn-outline-dark btn-lg" style="margin: 5px;">
+    <a href="../">Back to the game list</a>
+</button>
+<script>
+    var chat_log = document.getElementById('chat-log');
+    var chat_id = document.getElementById('chat-id');
+    var chat_input = document.getElementById('chat-input');
+    var chat_submit = document.getElementById('chat-submit');
+    var chat_socket = new WebSocket('ws://' + window.location.host + '/ws/games/othello/');
+
+    chat_socket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        chat_log.value += (data.message + '\n');
+    };
+
+    chat_socket.onclose = function(e) {
+        chat_log.value += ('Chat socket closed unexpectedly' + '\n');
+    };
+
+    chat_input.focus();
+    chat_input.onkeyup = function(e) {
+        if (e.keyCode === 13) {
+            chat_submit.click();
+        }
+    };
+
+    chat_submit.onclick = function(e) {
+        chat_socket.send(JSON.stringify({
+            'message': chat_id.value + ': ' + chat_input.value,
+        }));
+        chat_input.value = '';
+    };
+</script>
+{% endblock %}

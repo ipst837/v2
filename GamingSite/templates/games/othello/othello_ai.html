@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="{% static 'jquery-3.6.0.min.js' %}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'board_styles.css' %}">
+    <title>Othello(vs AI)</title>
+</head>
+<body>
+{% include "navbar.html" %}
+<div class="board" style="width: 610px; float: left;">
+  {% csrf_token %}
+  <h1 id="status">
+  {% if model.end %}
+    {% if model.end == "Draw" %}
+    Draw!
+    {% else %}
+    {{ model.end }} has won the game!
+    {% endif %}
+  {% else %}
+    {% if model.board.turn == 64 %}
+      White's turn
+    {% else %}
+      Black's turn
+    {% endif %}
+  {% endif %}
+  </h1>
+  <h4 id="count">White: {{ model.board.wn }} / Black: {{ model.board.bn }}</h4>
+  {% for row in model.board.b %}
+  <div class="row">
+    {% for element in row %}
+      {% if element == 64 %}
+        <div class="square" style="color: #ffffff;" onclick="move({{ element }})">●</div>
+      {% elif element == 65 %}
+        <div class="square" style="color: #000000;" onclick="move({{ element }})">●</div>
+      {% else %}
+        <div class="square" onclick="move({{ element }})"></div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endfor %}
+  <div class="row my-3" align="center" style="width: 610px; margin: 20px;">
+    <div class="col-6">
+      <button class="btn btn-outline-warning btn-lg" style="margin: 20px;" onclick="move(-1)">one step back!</button>
+    </div>
+    <div class="col-6">
+      <button class="btn btn-outline-danger btn-lg" style="margin: 20px;" onclick="move(-2)">restart</button>
+    </div>
+  </div>
+  <div class="row my-3" align="center" style="width: 610px; margin: 20px;">
+    <div class="col-12">
+      <button class="btn btn-outline-primary btn-lg">
+        <a href="../../../">Back to the room list</a>
+      </button>
+    </div>
+  </div>
+</div>
+<div style="float: left; margin-top: 120px; margin-left: 20px;">
+    <textarea id="chat-log" rows="20" cols="80" style="margin: 5px;"></textarea><br>
+    <input id="chat-id" type="text" size="6" style="margin-left: 5px; margin: right: 3px; border: 3px solid black; border-radius: 5px; text-align: center;" value="User ID">
+    <input id="chat-input" type="text" size="54" style="margin-top: 8px;">
+    <input id="chat-submit" type="button" class="button-41" style="width: 12%;" value="Send">
+</div>
+<script>
+    var note = document.getElementById('status');
+    var count = document.getElementById('count');
+    var squares = document.getElementsByClassName('square');
+    var chat_log = document.getElementById('chat-log');
+    var chat_id = document.getElementById('chat-id');
+    var chat_input = document.getElementById('chat-input');
+    var chat_submit = document.getElementById('chat-submit');
+    var othello_socket = new WebSocket('ws://' + window.location.host + '/ws/games/othello/ai/' + String({{ room_id }}) + '/' + "{{ player }}" + '/');
+    var turn = {{ model.board.turn }};
+
+    othello_socket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        if (data.category == "move") {
+            for (var i = 0;i < 64;i++) {
+                if (data.board[i] == 64) {
+                    squares[i].innerText = "●";
+                    squares[i].style.color = "white";
+                }
+                else if (data.board[i] == 65) {
+                    squares[i].innerText = "●";
+                    squares[i].style.color = "black";
+                }
+                else {
+                    squares[i].innerText = null;
+                }
+            }
+
+            count.innerText = "White: " + String(data.status[0]) + " / Black: " + String(data.status[1]);
+            turn = data.status[2];
+
+            if (data.status[3]) {
+                if (data.status[3] == "Draw") {
+                    note.innerText = "Draw";
+                }
+                else {
+                    note.innerText = data.status[3] + " has won the game!";
+                }
+            }
+            else {
+                if (data.status[2] == 64) {
+                    note.innerText = "White's turn";
+                }
+                else {
+                    note.innerText = "Black's turn";
+                }
+            }
+
+            if (data.status[4] == 1) {
+                run_ai();
+            }
+        }
+        else {
+            chat_log.value += (data.message + '\n');
+        }
+    };
+
+    othello_socket.onclose = function(e) {
+        window.alert("Socket closed unexpectedly");
+    };
+
+    var move = function(x) {
+        if (("{{ player }}" == "white" && turn == 64) || ("{{ player }}" == "black" && turn == 65)) {
+            othello_socket.send(JSON.stringify(
+                {
+                    "category": "move",
+                    "value": x,
+                }
+            ));
+        }
+    };
+
+    var run_ai = function() {
+        othello_socket.send(JSON.stringify(
+            {
+                "category": "move",
+                "value": -3,
+            }
+        ));
+    };
+
+    chat_input.focus();
+    chat_input.onkeyup = function(e) {
+        if (e.keyCode === 13) {
+            chat_submit.click();
+        }
+    };
+
+    chat_submit.onclick = function(e) {
+        othello_socket.send(JSON.stringify(
+            {
+                "category": "chat",
+                "value": chat_id.value + ": " + chat_input.value,
+            }
+        ));
+        chat_input.value = "";
+    };
+</script>
+</body>
+</html>

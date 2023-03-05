@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="{% static 'jquery-3.6.0.min.js' %}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="refresh" content="1; url={% url 'games:tictactoe_ai' model.room_id  %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'board_styles.css' %}">
+    <title>Tic Tac Toe</title>
+</head>
+<body>
+{% include "navbar.html" %}
+<form id="action" method="POST" class="board" style="width: 210px;">
+  {% csrf_token %}
+  {% if model.end %}
+    {% if model.end == 'Draw' %}
+        <h1>Draw!</h1>
+    {% else %}
+        <h1>{{ model.end }} has won the game!</h1>
+    {% endif %}
+  {% else %}
+    <h1>{{ model.turn }}'s turn</h1>
+  {% endif %}
+  {% for row in model.board %}
+  <div class="row" style="line-height: 65px;">
+    {% for element in row %}
+      {% if element == 'O' or element == 'X' %}
+        <div class="square" style="font-size: 80px;">{{ element }}</div>
+      {% else %}
+        <button name="action" type="submit" value="{{ element }}" class="square"></button>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endfor %}
+  <div class="row">
+    <div class="col-12">
+      <button name="action" type="submit" value="-2" class="btn btn-outline-danger btn-lg" style="margin: 20px;">restart</button>
+    </div>
+  </div>
+</form>
+<button class="btn btn-outline-primary btn-lg" style="margin: 10px;">
+  <a href="../../">Back to the room list</a>
+</button>
+</body>
+</html>

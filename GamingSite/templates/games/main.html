@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table">
+    <thead>
+    <tr class="thead-dark">
+        <th>No</th>
+        <th>Game</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if games %}
+    {% for game in games %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="/games{{ game.url }}">{{ game.name }}</a></td>
+        <td>{{ game.create_date }}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td>0</td>
+        <td>there is no game.</td>
+        <td>None</td>
+    </tr>
+    {% endif %}
+    </tbody>
+</table>
+<button type="button" class="button-85" style="margin: 10px;">
+    <a href="../" style="color: white; font-size: 20px;">Back to main page</a>
+</button>
+{% endblock %}

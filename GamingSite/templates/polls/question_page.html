@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table">
+    <thead>
+    <tr class="thead-dark">
+        <th>No</th>
+        <th>Subject</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if question_list %}
+    {% for question in question_list %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="{% url 'polls:detail' question.id %}">{{ question.subject }}</a></td>
+        <td>{{ question.create_date }}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td>0</td>
+        <td>there is no question.</td>
+        <td>None</td>
+    </tr>
+    {% endif %}
+    </tbody>
+</table>
+<button type="button" class="button-89" style="margin: 10px;">
+    <a href="../" style="font-size: 20px;">Back to main page</a>
+</button>
+{% endblock %}
