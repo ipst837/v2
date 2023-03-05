@@ -137,7 +137,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("lightsailredis-ro.kjifdv.ng.0001.apn2.cache.amazonaws.com:6379", 6379)],
+            "hosts": [("lightsailredis-ro.kjifdv.ng.0001.apn2.cache.amazonaws.com", 6379)],
         },
     },
 }
